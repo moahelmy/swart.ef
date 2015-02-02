@@ -56,25 +56,19 @@ namespace Swart.Repositories.EntityFramework
             GetSet().Remove(item);
         }
 
-        public virtual TEntity Remove(TKey id)
+        public override void Update(TEntity item)
         {
-            var item = Get(id);
-            if(item == null)
+            if (item == null)
+                throw new ArgumentNullException();
+
+            //get original item from db
+            var original = Get(item.Id);
+
+            if(original == null)
                 throw new RecordNotFoundException();
-            Remove(item);
-            return item;
-        }
-        #endregion               
 
-        #region Queryable
-        public IQueryable<TEntity> Filter(System.Linq.Expressions.Expression<Func<TEntity, bool>> filter)
-        {
-            return GetSet().Where(filter);
-        }
-
-        public IQueryable<TEntity> Filter(ISpecification<TEntity> specification)
-        {
-            return Filter(specification.SatisfiedBy());
+            //attach item if not exist
+            QueryableUnitOfWork.ApplyCurrentValues(original, item);           
         }
         #endregion
 

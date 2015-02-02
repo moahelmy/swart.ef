@@ -24,7 +24,7 @@ namespace Swart.Repositories.EntityFramework
             return new DbTransaction(Database.BeginTransaction());
         }
 
-        public void Commit()
+        public virtual void Commit()
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Swart.Repositories.EntityFramework
             }
         }
 
-        public void RollbackChanges()
+        public virtual  void RollbackChanges()
         {
             // set all entities in change tracker 
             // as 'unchanged state'
@@ -46,15 +46,22 @@ namespace Swart.Repositories.EntityFramework
                         .ForEach(entry => entry.State = EntityState.Unchanged);
         }
 
-        public IDbSet<TEntity> CreateSet<TEntity>() where TEntity : class
+        public virtual IDbSet<TEntity> CreateSet<TEntity>() where TEntity : class
         {
             return Set<TEntity>();
         }
 
-        public void Attach<TEntity>(TEntity item) where TEntity : class
+        public virtual void Attach<TEntity>(TEntity item) where TEntity : class
         {
             //attach and set as unchanged
             Entry(item).State = EntityState.Unchanged;
+        }
+
+        public virtual void ApplyCurrentValues<TEntity>(TEntity original, TEntity current)
+            where TEntity : class
+        {
+            //if not is attached, attach original and set current values
+            Entry(original).CurrentValues.SetValues(current);
         }
 
         #endregion
