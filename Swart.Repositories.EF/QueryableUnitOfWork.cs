@@ -19,7 +19,7 @@ namespace Swart.Repositories.EntityFramework
 
         #region IQueryableUnitOfWork
 
-        public ITransaction BeginTransaction()
+        public virtual ITransaction BeginTransaction()
         {
             return new DbTransaction(Database.BeginTransaction());
         }
@@ -37,7 +37,7 @@ namespace Swart.Repositories.EntityFramework
             }
         }
 
-        public virtual  void RollbackChanges()
+        public virtual void RollbackChanges()
         {
             // set all entities in change tracker 
             // as 'unchanged state'
