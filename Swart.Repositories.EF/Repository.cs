@@ -2,14 +2,13 @@
 using System.Data.Entity;
 using System.Linq;
 using Swart.DomainDrivenDesign.Domain;
-using Swart.DomainDrivenDesign.Domain.Specification;
 using Swart.DomainDrivenDesign.Repositories;
 using Swart.DomainDrivenDesign.Repositories.Exceptions;
 
 namespace Swart.Repositories.EntityFramework
 {
-    public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
-        where TEntity : AbstractEntity, IEntity<TKey> where TKey : IComparable
+    public class Repository<TEntity, TKey> : RepositoryBase<TEntity, TKey>
+        where TEntity : class, IEntity<TKey> where TKey : IComparable
     {
         protected readonly IQueryableUnitOfWork QueryableUnitOfWork;
 
@@ -22,21 +21,21 @@ namespace Swart.Repositories.EntityFramework
         }
 
         #region Basic
-        public IUnitOfWork UnitOfWork { get { return QueryableUnitOfWork; } }
+        public override IUnitOfWork UnitOfWork { get { return QueryableUnitOfWork; } }
 
-        public IQueryable<TEntity> GetAll()
+        public override IQueryable<TEntity> List()
         {
             return GetSet();
         }
 
-        public virtual TEntity Get(TKey id)
+        public override TEntity Get(TKey id)
         {
             return GetSet().Find(id);
         }
         #endregion        
 
         #region List
-        public virtual void Add(TEntity item)
+        public override void Add(TEntity item)
         {
             if (item != null)
                 GetSet().Add(item); // add new item in this set
@@ -44,7 +43,7 @@ namespace Swart.Repositories.EntityFramework
                 throw new ArgumentNullException();
         }
 
-        public virtual void Remove(TEntity item)
+        public override void Delete(TEntity item)
         {
             if (item == null)
                 throw new ArgumentNullException();
@@ -73,7 +72,7 @@ namespace Swart.Repositories.EntityFramework
         #endregion
 
         #region IDisposable
-        public void Dispose()
+        public override void Dispose()
         {
             QueryableUnitOfWork.Dispose();
         }
