@@ -41,11 +41,11 @@ namespace Swart.Repositories.EntityFramework
             return Set<TEntity>();
         }
 
-        public void SetModified<TEntity>(TEntity item)
+        public void SetModified<TEntity>(TEntity entity)
             where TEntity : class
         {
-            //this operation also attach item in object state manager
-            Entry(item).State = EntityState.Modified;
+            //this operation also attach entity in object state manager
+            Entry(entity).State = EntityState.Modified;
         }
 
         #endregion

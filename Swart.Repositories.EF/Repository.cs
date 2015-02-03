@@ -3,7 +3,6 @@ using System.Data.Entity;
 using System.Linq;
 using Swart.DomainDrivenDesign.Domain;
 using Swart.DomainDrivenDesign.Repositories;
-using Swart.DomainDrivenDesign.Repositories.Exceptions;
 
 namespace Swart.Repositories.EntityFramework
 {
@@ -35,33 +34,33 @@ namespace Swart.Repositories.EntityFramework
         #endregion        
 
         #region List
-        public override void Add(TEntity item)
+        public override void Add(TEntity entity)
         {
-            if (item != null)
-                GetSet().Add(item); // add new item in this set
+            if (entity != null)
+                GetSet().Add(entity); // add new entity in this set
             else
                 throw new ArgumentNullException();
         }
 
-        public override void Delete(TEntity item)
+        public override void Delete(TEntity entity)
         {
-            if (item == null)
+            if (entity == null)
                 throw new ArgumentNullException();
 
-            //attach item if not exist
-            GetSet().Attach(item);
+            //attach entity if not exist
+            GetSet().Attach(entity);
 
             //set as "removed"
-            GetSet().Remove(item);
+            GetSet().Remove(entity);
         }
 
-        public override void Update(TEntity item)
+        public override void Update(TEntity entity)
         {
-            if (item == null)
+            if (entity == null)
                 throw new ArgumentNullException();
 
-            //attach item if not exist and mark it as modified
-            QueryableUnitOfWork.SetModified(item);
+            //attach entity if not exist and mark it as modified
+            QueryableUnitOfWork.SetModified(entity);
         }
         #endregion
 

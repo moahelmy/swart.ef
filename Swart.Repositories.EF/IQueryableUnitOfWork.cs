@@ -7,6 +7,6 @@ namespace Swart.Repositories.EntityFramework
     {        
         IDbSet<TEntity> CreateSet<TEntity>() where TEntity : class;
 
-        void SetModified<TEntity>(TEntity item) where TEntity : class;
+        void SetModified<TEntity>(TEntity entity) where TEntity : class;
     }
 }
