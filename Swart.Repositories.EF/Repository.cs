@@ -49,7 +49,7 @@ namespace Swart.Repositories.EntityFramework
                 throw new ArgumentNullException();
 
             //attach item if not exist
-            QueryableUnitOfWork.Attach(item);
+            GetSet().Attach(item);
 
             //set as "removed"
             GetSet().Remove(item);
@@ -60,14 +60,8 @@ namespace Swart.Repositories.EntityFramework
             if (item == null)
                 throw new ArgumentNullException();
 
-            //get original item from db
-            var original = Get(item.Id);
-
-            if(original == null)
-                throw new RecordNotFoundException();
-
-            //attach item if not exist
-            QueryableUnitOfWork.ApplyCurrentValues(original, item);           
+            //attach item if not exist and mark it as modified
+            QueryableUnitOfWork.SetModified(item);
         }
         #endregion
 

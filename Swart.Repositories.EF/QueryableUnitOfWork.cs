@@ -1,6 +1,5 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Linq;
 using Swart.DomainDrivenDesign.Repositories;
 using Swart.DomainDrivenDesign.Repositories.Exceptions;
 
@@ -24,7 +23,7 @@ namespace Swart.Repositories.EntityFramework
             return new DbTransaction(Database.BeginTransaction());
         }
 
-        public virtual void Commit()
+        public new virtual void SaveChanges()
         {
             try
             {
@@ -37,31 +36,16 @@ namespace Swart.Repositories.EntityFramework
             }
         }
 
-        public virtual void RollbackChanges()
-        {
-            // set all entities in change tracker 
-            // as 'unchanged state'
-            ChangeTracker.Entries()
-                        .ToList()
-                        .ForEach(entry => entry.State = EntityState.Unchanged);
-        }
-
         public virtual IDbSet<TEntity> CreateSet<TEntity>() where TEntity : class
         {
             return Set<TEntity>();
         }
 
-        public virtual void Attach<TEntity>(TEntity item) where TEntity : class
-        {
-            //attach and set as unchanged
-            Entry(item).State = EntityState.Unchanged;
-        }
-
-        public virtual void ApplyCurrentValues<TEntity>(TEntity original, TEntity current)
+        public void SetModified<TEntity>(TEntity item)
             where TEntity : class
         {
-            //if not is attached, attach original and set current values
-            Entry(original).CurrentValues.SetValues(current);
+            //this operation also attach item in object state manager
+            Entry(item).State = EntityState.Modified;
         }
 
         #endregion
