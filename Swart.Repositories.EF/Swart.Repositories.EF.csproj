@@ -30,11 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\Swart.Library\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\solution\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\Swart.Library\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\solution\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -48,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Conventions\ForeignKeyNamingConvention.cs" />
     <Compile Include="DbTransaction.cs" />
+    <Compile Include="Extensions\EntityExtesnions.cs" />
     <Compile Include="IQueryableUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryableUnitOfWork.cs" />
@@ -59,9 +62,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DDD\Swart.DomainDrivenDesign\Swart.DomainDrivenDesign.csproj">
+    <ProjectReference Include="..\..\swart.ddd\Swart.DomainDrivenDesign\Swart.DomainDrivenDesign.csproj">
       <Project>{3AF2BDDB-77BD-46D0-B327-E5E03A89972B}</Project>
       <Name>Swart.DomainDrivenDesign</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\swart.linq\Swart.Linq\Swart.Linq.csproj">
+      <Project>{577E5294-E73F-45DE-AECE-1F96DA83B59D}</Project>
+      <Name>Swart.Linq</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

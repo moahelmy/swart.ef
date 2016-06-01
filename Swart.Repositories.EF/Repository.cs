@@ -3,11 +3,12 @@ using System.Data.Entity;
 using System.Linq;
 using Swart.DomainDrivenDesign.Domain;
 using Swart.DomainDrivenDesign.Repositories;
+using Swart.Repositories.EntityFramework.Extensions;
 
 namespace Swart.Repositories.EntityFramework
 {
     public class Repository<TEntity, TKey> : RepositoryBase<TEntity, TKey>
-        where TEntity : class, IEntity<TKey> where TKey : IComparable
+        where TEntity : class, IEntity<TKey> where TKey : IComparable, IEquatable<TKey>
     {
         protected readonly IQueryableUnitOfWork QueryableUnitOfWork;
 
@@ -19,22 +20,18 @@ namespace Swart.Repositories.EntityFramework
             QueryableUnitOfWork = unitOfWork;
         }
 
-        #region Basic
-        public override IUnitOfWork UnitOfWork { get { return QueryableUnitOfWork; } }
-
-        public override IQueryable<TEntity> List()
+        protected override IQueryable<TEntity> _List()
         {
             return GetSet();
         }
 
-        public override TEntity Get(TKey id)
-        {
-            return GetSet().Find(id);
-        }
+        #region Basic
+        public override IUnitOfWork UnitOfWork { get { return QueryableUnitOfWork; } }        
+
         #endregion        
 
         #region List
-        public override void Add(TEntity entity)
+        protected override void AddEntity(TEntity entity)
         {
             if (entity != null)
                 GetSet().Add(entity); // add new entity in this set
@@ -42,7 +39,7 @@ namespace Swart.Repositories.EntityFramework
                 throw new ArgumentNullException();
         }
 
-        public override void Delete(TEntity entity)
+        protected override void DeleteEntity(TEntity entity)
         {
             if (entity == null)
                 throw new ArgumentNullException();
@@ -54,7 +51,7 @@ namespace Swart.Repositories.EntityFramework
             GetSet().Remove(entity);
         }
 
-        public override void Update(TEntity entity)
+        protected override void UpdateEntity(TEntity entity)
         {
             if (entity == null)
                 throw new ArgumentNullException();
