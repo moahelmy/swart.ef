@@ -4,6 +4,7 @@ using System.Linq;
 using Swart.DomainDrivenDesign.Domain;
 using Swart.DomainDrivenDesign.Repositories;
 using Swart.Repositories.EntityFramework.Extensions;
+using Swart.DomainDrivenDesign;
 
 namespace Swart.Repositories.EntityFramework
 {
@@ -41,9 +42,6 @@ namespace Swart.Repositories.EntityFramework
 
         protected override void DeleteEntity(TEntity entity)
         {
-            if (entity == null)
-                throw new ArgumentNullException();
-
             //attach entity if not exist
             GetSet().Attach(entity);
 
@@ -51,13 +49,12 @@ namespace Swart.Repositories.EntityFramework
             GetSet().Remove(entity);
         }
 
-        protected override void UpdateEntity(TEntity entity)
+        protected override IVoidResult UpdateEntity(TEntity entity)
         {
-            if (entity == null)
-                throw new ArgumentNullException();
-
             //attach entity if not exist and mark it as modified
             QueryableUnitOfWork.SetModified(entity);
+
+            return new VoidResult();
         }
         #endregion
 
