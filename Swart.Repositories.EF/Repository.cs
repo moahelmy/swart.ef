@@ -3,7 +3,6 @@ using System.Data.Entity;
 using System.Linq;
 using Swart.DomainDrivenDesign.Domain;
 using Swart.DomainDrivenDesign.Repositories;
-using Swart.Repositories.EntityFramework.Extensions;
 using Swart.DomainDrivenDesign;
 
 namespace Swart.Repositories.EntityFramework
